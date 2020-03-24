@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import './LakeDetails.css';
+import './AllLakes.css';
 const imgPath = process.env.PUBLIC_URL + '/assets/';
 
 
-const LakeDetails = () => {
+const AllLakes = () => {
 
     const [lakes, setLakes] = useState(null);
 
@@ -40,4 +40,4 @@ const LakeDetails = () => {
     }
 };
 
-export default LakeDetails;
+export default AllLakes;

@@ -1,0 +1,92 @@
+{
+  "commonCosts":{
+    "pzw": [
+      {"optionName": "Tak", "optionValue": "10"},
+      {"optionName": "Nie", "optionValue": "20"}
+    ],
+    "fishingMethods": [
+      {"spinningMethod": "Spinning", "spinningMethodCost": "20"},
+      {"spinningMethod": "Grunt", "spinningMethodCost": "10"},
+      {"spinningMethod": "Feeder", "spinningMethodCost": "12"},
+      {"spinningMethod": "Spławik", "spinningMethodCost": "6"},
+      {"spinningMethod": "Żywiec", "spinningMethodCost": "30"}
+    ],
+    "fishingCosts": [
+      {"dayValue": "1 dzień", "dayCost": "10"},
+      {"dayValue": "2 dni", "dayCost": "10"},
+      {"dayValue": "3 dni", "dayCost": "25"},
+      {"dayValue": "7 dni", "dayCost": "30"}
+    ],
+
+
+    "weightLimits":[
+      {"fishingWeight": "1 kg", "fishingWeightCost": "10"},
+      {"fishingWeight": "2 kg", "fishingWeightCost": "20"},
+      {"fishingWeight": "10 kg", "fishingWeightCost": "100"}
+    ]
+  },
+
+  "lakes": [
+    {
+      "id": 1,
+      "name": "Tychowo",
+      "surface": "18 HA",
+      "location": "Stargard",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.",
+      "img": "tychowo.jpg",
+      "price": "30",
+      "choosePosition": [
+        {"numberOfPosition": "1", "positionCost": "5"},
+        {"numberOfPosition": "2", "positionCost": "8"},
+        {"numberOfPosition": "3", "positionCost": "10"},
+        {"numberOfPosition": "4", "positionCost": "14"}
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Kiczarowo",
+      "surface": "9 HA",
+      "location": "Kicko",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.",
+      "img": "kiczarowo.jpg",
+      "price": "20",
+      "choosePosition": [
+        {"numberOfPosition": "1", "positionCost": "3"},
+        {"numberOfPosition": "2", "positionCost": "10"},
+        {"numberOfPosition": "3", "positionCost": "114"},
+        {"numberOfPosition": "4", "positionCost": "11"}
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Grabowo",
+      "surface": "52 HA",
+      "location": "Piaszcze",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.",
+      "img": "grabowo.jpg",
+      "price": "35",
+      "choosePosition": [
+        {"numberOfPosition": "1", "positionCost": "20"},
+        {"numberOfPosition": "2", "positionCost": "28"},
+        {"numberOfPosition": "3", "positionCost": "18"},
+        {"numberOfPosition": "4", "positionCost": "30"}
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Miedwie",
+      "surface": "1900 HA",
+      "location": "Morzyczyn",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.",
+      "img": "miedwie.jpg",
+      "price": "25",
+      "choosePosition": [
+        {"numberOfPosition": "1", "positionCost": "10"},
+        {"numberOfPosition": "2", "positionCost": "12"},
+        {"numberOfPosition": "3", "positionCost": "13"},
+        {"numberOfPosition": "4", "positionCost": "14"}
+      ]
+    }
+  ],
+  "reservations": []
+}

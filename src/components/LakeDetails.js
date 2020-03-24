@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import './Lake.css';
+import './LakeDetails.css';
 const imgPath = process.env.PUBLIC_URL + '/assets/';
 
-const Lake = (props) => {
+const LakeDetails = (props) => {
 
     const [lake, setLake] = useState(null);
 
@@ -10,6 +10,7 @@ const Lake = (props) => {
         fetch(`http://localhost:3000/lakes/${props.match.params.id}`)
             .then(response => response.json())
             .then(data => {
+
                 setLake(data);
                 console.log(data);
             })
@@ -71,4 +72,4 @@ const Lake = (props) => {
     }
 };
 
-export default Lake;
+export default LakeDetails;

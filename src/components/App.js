@@ -1,26 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+    HashRouter,
+    Route,
+    Link,
+    Switch,
+    NavLink,
+} from 'react-router-dom';
+import Navigation from './Navigation';
+import Main from "./Main";
+import LakeDetails from "./LakeDetails";
+import "./App.css";
+import Reservation from "./Reservation";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          React App
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <HashRouter>
+            <>
+                <Navigation/>
+                <Switch>
+                    <Route exact path='/' component={Main}/>
+                    <Route exact path='/lake/:id' component={LakeDetails}/>
+                    <Route exact path='/lake/:id/reservation' component={Reservation}/>
+                </Switch>
+            </>
+        </HashRouter>
+    );
 }
 
 export default App;
