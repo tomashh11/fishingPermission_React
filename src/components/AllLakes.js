@@ -2,13 +2,12 @@ import React, {useEffect, useState} from "react";
 import './AllLakes.css';
 const imgPath = process.env.PUBLIC_URL + '/assets/';
 
-
 const AllLakes = () => {
 
     const [lakes, setLakes] = useState(null);
 
     useEffect(() => {
-        fetch('http://localhost:3000/lakes')
+        fetch(`${process.env.REACT_APP_API_URL}/lakes`)
             .then(response => response.json())
             .then(data => {
                 setLakes(data);
@@ -26,7 +25,7 @@ const AllLakes = () => {
                         <div className="card h-100">
                             <img className="card-img-top" src={`${imgPath}${lake.img}`} alt=""/>
                             <div className="card-body">
-                                <h4 className="card-title">{lake.name}</h4>
+                                <h4 className="card-title">j. {lake.name}</h4>
                                 <p className="card-text">{lake.description}</p>
                             </div>
                             <div className="card-footer">

@@ -3,22 +3,33 @@ import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import InputGroup from "react-bootstrap/InputGroup";
+import Modal from "react-bootstrap/Modal";
+import Badge from "react-bootstrap/Badge";
 
 
 const Reservation = (props) => {
 
+    const [reservation, setReservation] = useState({
+        name: "",
+        surname: "",
+        email: "",
+        date: "",
+        option: 0,
+        position: 0,
+        permission: 0,
+        method: 0,
+        limit: 0
+    });
+
     const [commonCosts, setCommonCosts] = useState(null);
     const [validated, setValidated] = useState(false);
-    const [option, setOption] = useState(0);
-    const [position, setPosition] = useState(0);
-    const [permission, setPermission] = useState(0);
-    const [method, setMethod] = useState(0);
-    const [limit, setLimit] = useState(0);
     const [sum, setSum] = useState(0);
     const [lake, setLake] = useState(null);
+    const [regulation, setRegulation] = useState(false);
+    const [popUp, setPopUp] = useState([]);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/commonCosts`, {
+        fetch(`${process.env.REACT_APP_API_URL}/commonCosts`, {
             method: 'GET'
         })
             .then(response => response.json())
@@ -26,7 +37,7 @@ const Reservation = (props) => {
                 setCommonCosts(data);
             });
 
-        fetch(`http://localhost:3000/lakes/${props.match.params.id}`, {
+        fetch(`${process.env.REACT_APP_API_URL}/lakes/${props.match.params.id}`, {
             method: 'GET'
         })
             .then(response => response.json())
@@ -37,7 +48,11 @@ const Reservation = (props) => {
 
     useEffect(() => {
         countCost();
+        validateForm();
     });
+
+    const validateForm = () => {
+    };
 
     const handleSubmit = event => {
         const form = event.currentTarget;
@@ -49,42 +64,161 @@ const Reservation = (props) => {
         setValidated(true);
     };
 
+    const handleName = (name) => {
+        setReservation(prevState => {
+            return {
+                ...prevState,
+                name: name
+            }
+        });
+    };
+
+    const handleSurname = (surname) => {
+        setReservation(prevState => {
+            return {
+                ...prevState,
+                surname: surname
+            }
+        });
+    };
+
+    const handleEmail = (email) => {
+        setReservation(prevState => {
+            return {
+                ...prevState,
+                email: email
+            }
+        })
+    };
+
+    const handleDate = (date) => {
+        setReservation(prevState => {
+            return {
+                ...prevState,
+                date: date
+            }
+        });
+    };
+
     const pzwChange = (option) => {
-        setOption(option);
+        setReservation(prevState => {
+            return {
+                ...prevState,
+                option: option,
+            };
+        });
     };
 
     const changePosition = (position) => {
-        setPosition(position);
+        setReservation(prevState => {
+            return {
+                ...prevState,
+                position: position
+            };
+        });
     };
 
     const permissionLong = (permission) => {
-        setPermission(permission);
+        setReservation(prevState => {
+            return {
+                ...prevState,
+                permission: permission
+            };
+        });
     };
 
     const fishingMethod = (method) => {
-        setMethod(method);
+        setReservation(prevState => {
+            return {
+                ...prevState,
+                method: method
+            };
+        });
     };
 
     const weightLimit = (limit) => {
-        setLimit(limit);
+        setReservation(prevState => {
+            return {
+                ...prevState,
+                limit: limit
+            };
+        });
     };
 
     const countCost = () => {
         if (lake !== null) {
-            setSum(parseInt(lake.price) + parseInt(option) + parseInt(position) + parseInt(permission) + parseInt(method) + parseInt(limit))
+            setSum(parseInt(lake.price) + parseInt(reservation.option) + parseInt(reservation.position) + parseInt(reservation.permission) + parseInt(reservation.method) + parseInt(reservation.limit))
         }
         else {
             return null
         }
     };
 
-    const handleClickSum = () => {
+    const [showCorrect, setShowCorrect] = useState(false);
+    const [showWrong, setShowWrong] = useState(false);
+
+    const handleCloseCorrect = () => setShowCorrect(false);
+    const handleCloseWrong = () => setShowWrong(false);
+
+    const handleClickSubmit = () => {
+        if (reservation.name !== "" && reservation.surname !== "" && (reservation.email !== "" && reservation.email.includes('@')) && reservation.date !== "" && regulation !== false) {
+            fetch(`${process.env.REACT_APP_API_URL}/reservations`, {
+                method: 'POST',
+                body: JSON.stringify(reservation),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    setShowCorrect(true);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        } else {
+            setShowWrong(true);
+            if (popUp.includes("imię")){
+                popUp.indexOf('imię') !== -1 && popUp.splice(popUp.indexOf('imię'), 1);
+            }
+            if (reservation.name === "") {
+                setPopUp(["imię"]);
+            }
+            if (popUp.includes("nazwisko")){
+                popUp.indexOf('nazwisko') !== -1 && popUp.splice(popUp.indexOf('nazwisko'), 1);
+            }
+            if (reservation.surname === "") {
+                setPopUp(prevState => [...prevState, "nazwisko"])
+            }
+            if (popUp.includes("email")){
+                popUp.indexOf('email') !== -1 && popUp.splice(popUp.indexOf('email'), 1);
+            }
+            if (reservation.email === "") {
+                setPopUp(prevState => [...prevState, "email"])
+            }
+            if (popUp.includes("datę")){
+                popUp.indexOf('datę') !== -1 && popUp.splice(popUp.indexOf('datę'), 1);
+            }
+            if (reservation.date === "") {
+                setPopUp(prevState => [...prevState, "datę"])
+            }
+            if (popUp.includes("zaakceptuj regulamin")){
+                popUp.indexOf('zaakceptuj regulamin') !== -1 && popUp.splice(popUp.indexOf('zaakceptuj regulamin'), 1);
+            }
+            if (regulation === false) {
+                setPopUp(prevState => [...prevState, "zaakceptuj regulamin"])
+            }
+        }
+    };
+
+    const handleChangeRegulation = () => {
+        setRegulation(!regulation);
     };
 
     return <>
-        <div className="container content">
+        <div className="container content" style={{height: '90vh'}}>
             {lake !== null ? <>
-                <h4>Rezerwacja dla jeziora: {lake.name}</h4>
+                <h4 style={{marginTop: '40px', marginBottom: '20px'}}>Zezwolenie dla jeziora: {lake.name}</h4>
                 <h5>Opłata wejściowa na jezioro: {lake.price} PLN</h5>
             </> : null}
             <div className="row">
@@ -93,34 +227,23 @@ const Reservation = (props) => {
                         <Form.Row>
                             <Form.Group as={Col} md="4" controlId="validationCustom01">
                                 <Form.Label>Podaj imię</Form.Label>
-                                <Form.Control
-                                    required
-                                    type="text"
-                                    placeholder="Imię"
-                                />
-                                <Form.Control.Feedback>Wypełnione poprawnie!</Form.Control.Feedback>
+                                <Form.Control required type="text" placeholder="Imię"
+                                              onChange={(event) => handleName(event.target.value)}/>
+                                <Form.Control.Feedback type="invalid">Podaj imię.</Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group as={Col} md="4" controlId="validationCustom02">
                                 <Form.Label>Podaj nazwisko</Form.Label>
-                                <Form.Control
-                                    required
-                                    type="text"
-                                    placeholder="Nazwisko"
-                                />
-                                <Form.Control.Feedback>Wypełnione poprawnie!</Form.Control.Feedback>
+                                <Form.Control required type="text" placeholder="Nazwisko"
+                                              onChange={(event) => handleSurname(event.target.value)}/>
+                                <Form.Control.Feedback type="invalid">Podaj nazwisko.</Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group as={Col} md="4" controlId="validationCustomUsername">
                                 <Form.Label>Adres email</Form.Label>
                                 <InputGroup>
-                                    <Form.Control
-                                        type="email"
-                                        placeholder="email"
-                                        aria-describedby="inputGroupPrepend"
-                                        required
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        Podaj adres email.
-                                    </Form.Control.Feedback>
+                                    <Form.Control required type="email" placeholder="email"
+                                                  aria-describedby="inputGroupPrepend"
+                                                  onChange={(event) => handleEmail(event.target.value)}/>
+                                    <Form.Control.Feedback type="invalid">Podaj adres email.</Form.Control.Feedback>
                                 </InputGroup>
                             </Form.Group>
                         </Form.Row>
@@ -130,12 +253,9 @@ const Reservation = (props) => {
                                     <Form.Label>Czy jesteś zrzeszony w PZW?</Form.Label>
                                     <Form.Control as="select" custom
                                                   onChange={(event) => pzwChange(event.target.value)}>
-                                        {
-                                            commonCosts !== null
-                                                ? commonCosts.pzw.map((option) => <option
-                                                    value={option.optionValue}>{option.optionName}</option>)
-                                                : null
-                                        }
+                                        <option value="0"></option>
+                                        {commonCosts && commonCosts.pzw.map((option) => <option
+                                            value={option.optionValue}>{option.optionName}</option>)}
                                     </Form.Control>
                                 </Form.Group>
                             </Form.Group>
@@ -144,18 +264,18 @@ const Reservation = (props) => {
                                     <Form.Label>Wybierz stanowisko</Form.Label>
                                     <Form.Control as="select" custom
                                                   onChange={(event) => changePosition(event.target.value)}>
-                                        {
-                                            lake !== null
-                                                ? lake.choosePosition.map((position) => <option
-                                                    value={position.positionCost}>{position.numberOfPosition}</option>)
-                                                : null
-                                        }
+                                        <option value="0"></option>
+                                        {lake && lake.choosePosition.map((position) => <option
+                                            value={position.positionCost}>{position.numberOfPosition}</option>)}
                                     </Form.Control>
                                 </Form.Group>
                             </Form.Group>
                             <Form.Group as={Col} md="4" controlId="validationCustom06">
                                 <Form.Label>Wybierz datę</Form.Label>
-                                <input type="date" id="example-datetime-local-input" className="form-control"/>
+                                <input required type="date" id="example-datetime-local-input"
+                                       className="form-control"
+                                       onChange={(event) => handleDate(event.target.value)}/>
+                                <Form.Control.Feedback type="invalid">Wybierz datę.</Form.Control.Feedback>
                             </Form.Group>
                         </Form.Row>
                         <Form.Row>
@@ -163,42 +283,61 @@ const Reservation = (props) => {
                                 <Form.Label>Wybierz długość zezwolenia</Form.Label>
                                 <Form.Control as="select" custom
                                               onChange={(event) => permissionLong(event.target.value)}>
-                                    {commonCosts !== null
-                                        ? commonCosts.fishingCosts.map((costs) => <option
-                                            value={costs.dayCost}>{costs.dayValue}</option>)
-                                        : null}
+                                    <option value="0"></option>
+                                    {commonCosts && commonCosts.fishingCosts.map((costs) => <option
+                                        value={costs.dayCost}>{costs.dayValue}</option>)}
                                 </Form.Control>
                             </Form.Group>
                             <Form.Group as={Col} md="4" controlId="validationCustom08">
                                 <Form.Label>Wybierz metodę połowu</Form.Label>
                                 <Form.Control as="select" custom
                                               onChange={(event) => fishingMethod(event.target.value)}>
-                                    {commonCosts !== null
-                                        ? commonCosts.fishingMethods.map((method) => <option
-                                            value={method.spinningMethodCost}>{method.spinningMethod}</option>)
-                                        : null}
+                                    <option value="0"></option>
+                                    {commonCosts && commonCosts.fishingMethods.map((method) => <option
+                                        value={method.spinningMethodCost}>{method.spinningMethod}</option>)}
                                 </Form.Control>
                             </Form.Group>
                             <Form.Group as={Col} md="4" controlId="validationCustom09">
                                 <Form.Label>Wybierz limit połowu</Form.Label>
-                                <Form.Control as="select" custom onChange={(event) => weightLimit(event.target.value)}>
-                                    {commonCosts !== null
-                                        ? commonCosts.weightLimits.map((limit) => <option
-                                            value={limit.fishingWeightCost}>{limit.fishingWeight}</option>)
-                                        : null}
+                                <Form.Control as="select" custom
+                                              onChange={(event) => weightLimit(event.target.value)}>
+                                    <option value="0"></option>
+                                    {commonCosts && commonCosts.weightLimits.map((limit) => <option
+                                        value={limit.fishingWeightCost}>{limit.fishingWeight}</option>)}
                                 </Form.Control>
                             </Form.Group>
                         </Form.Row>
                         <Form.Group>
-                            <Form.Check
-                                required
-                                label="Akceptuję regulamin łowiska"
-                                feedback="You must agree before submitting."
-                            />
+                            <Form.Check required label="Akceptuję regulamin łowiska" checked={regulation}
+                                        onChange={handleChangeRegulation}/>
                         </Form.Group>
-                        <span>Łączna kwota do zapłaty: {sum} PLN</span><br/>
+                        <span>Łączna kwota do zapłaty: <Badge variant="secondary"
+                                                              style={{fontSize: '20px'}}>{sum} PLN</Badge></span><br/>
                         <br/>
-                        <Button type="submit" onClick={handleClickSum}>Wykup zezwolenie</Button>
+                        <Button variant="primary" type="submit" onClick={handleClickSubmit}>Wykup zezwolenie</Button>
+                        <Modal show={showCorrect} onHide={handleCloseCorrect}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>{reservation.name} {reservation.surname}</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>Dziękujemy za wykupienie zezwolenia od dnia: <span
+                                style={{fontWeight: '700', color: 'red'}}>{reservation.date}</span>. Wkrótce
+                                otrzymasz maila z potwierdzeniem i szczegółami zamówienia.</Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="primary" onClick={handleCloseCorrect}>Zamknij</Button>
+                            </Modal.Footer>
+                        </Modal>
+                        <Modal show={showWrong} onHide={handleCloseWrong}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Wypełnij brakujące dane.</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>Uzupełnij:
+                                {popUp.map((info) => <><span style={{color: "red"}}> {info}</span><span> / </span></>)}
+                                <span><br/>Reszta pól opcjonalnie.</span>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="danger" onClick={handleCloseWrong}>Zamknij</Button>
+                            </Modal.Footer>
+                        </Modal>
                     </Form>
                 </div>
             </div>
