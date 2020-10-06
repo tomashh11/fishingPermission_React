@@ -4,7 +4,7 @@ const Footer = () => {
     return <>
         <footer className="bg-dark" style={{paddingTop: '20px', paddingBottom: "20px", marginTop: '40px'}}>
             <div className="container">
-                <p className="m-0 text-center text-white">Copyright &copy; by wrona 2020 r.</p>
+                <p className="m-0 text-center text-white">Copyright &copy; by Tomasz Wroński 2020 r.</p>
             </div>
         </footer>
     </>
