@@ -175,18 +175,5 @@
       ]
     }
   ],
-  "reservations": [
-    {
-      "name": "test",
-      "surname": "test",
-      "email": "test@wp.pl",
-      "date": "2020-03-30",
-      "option": 0,
-      "position": 0,
-      "permission": 0,
-      "method": 0,
-      "limit": 0,
-      "id": 1
-    }
-  ]
+  "reservations": []
 }

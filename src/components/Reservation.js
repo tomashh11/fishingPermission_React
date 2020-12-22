@@ -48,11 +48,7 @@ const Reservation = (props) => {
 
     useEffect(() => {
         countCost();
-        validateForm();
     });
-
-    const validateForm = () => {
-    };
 
     const handleSubmit = event => {
         const form = event.currentTarget;
@@ -157,52 +153,60 @@ const Reservation = (props) => {
     const [showCorrect, setShowCorrect] = useState(false);
     const [showWrong, setShowWrong] = useState(false);
 
-    const handleCloseCorrect = () => setShowCorrect(false);
+    const handleCloseCorrect = () => {
+        setShowCorrect(false)
+    };
+
     const handleCloseWrong = () => setShowWrong(false);
 
-    const handleClickSubmit = () => {
+    const handleClickSubmit = (event) => {
+        event.preventDefault();
         if (reservation.name !== "" && reservation.surname !== "" && (reservation.email !== "" && reservation.email.includes('@')) && reservation.date !== "" && regulation !== false) {
             fetch(`${process.env.REACT_APP_API_URL}/reservations`, {
                 method: 'POST',
                 body: JSON.stringify(reservation),
                 headers: {
-                    "Content-Type": "application/json"
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 }
             })
-                .then(response => response.json())
-                .then(data => {
-                    setShowCorrect(true);
-                })
+                .then(response => {
+                    console.log(response);
+                    if (response.status === 201) {
+                            setShowCorrect(true);
+                        }
+                    }
+                )
                 .catch(error => {
                     console.log(error);
                 });
         } else {
             setShowWrong(true);
-            if (popUp.includes("imię")){
+            if (popUp.includes("imię")) {
                 popUp.indexOf('imię') !== -1 && popUp.splice(popUp.indexOf('imię'), 1);
             }
             if (reservation.name === "") {
                 setPopUp(["imię"]);
             }
-            if (popUp.includes("nazwisko")){
+            if (popUp.includes("nazwisko")) {
                 popUp.indexOf('nazwisko') !== -1 && popUp.splice(popUp.indexOf('nazwisko'), 1);
             }
             if (reservation.surname === "") {
                 setPopUp(prevState => [...prevState, "nazwisko"])
             }
-            if (popUp.includes("email")){
+            if (popUp.includes("email")) {
                 popUp.indexOf('email') !== -1 && popUp.splice(popUp.indexOf('email'), 1);
             }
-            if (reservation.email === "") {
+            if (!reservation.email.includes('@')) {
                 setPopUp(prevState => [...prevState, "email"])
             }
-            if (popUp.includes("datę")){
+            if (popUp.includes("datę")) {
                 popUp.indexOf('datę') !== -1 && popUp.splice(popUp.indexOf('datę'), 1);
             }
             if (reservation.date === "") {
                 setPopUp(prevState => [...prevState, "datę"])
             }
-            if (popUp.includes("zaakceptuj regulamin")){
+            if (popUp.includes("zaakceptuj regulamin")) {
                 popUp.indexOf('zaakceptuj regulamin') !== -1 && popUp.splice(popUp.indexOf('zaakceptuj regulamin'), 1);
             }
             if (regulation === false) {
@@ -216,7 +220,7 @@ const Reservation = (props) => {
     };
 
     return <>
-        <div className="container content" style={{height: '90vh'}}>
+        <div className="container content" style={{height: '87vh'}}>
             {lake !== null ? <>
                 <h4 style={{marginTop: '40px', marginBottom: '20px'}}>Zezwolenie dla jeziora: {lake.name}</h4>
                 <h5>Opłata wejściowa na jezioro: {lake.price} PLN</h5>
@@ -312,9 +316,12 @@ const Reservation = (props) => {
                                         onChange={handleChangeRegulation}/>
                         </Form.Group>
                         <span>Łączna kwota do zapłaty: <Badge variant="secondary"
-                                                              style={{fontSize: '20px'}}>{sum} PLN</Badge></span><br/>
+                                                              style={{
+                                                                  fontSize: '20px',
+                                                                  marginLeft: '20px'
+                                                              }}>{sum} PLN</Badge></span><br/>
                         <br/>
-                        <Button variant="primary" type="submit" onClick={handleClickSubmit}>Wykup zezwolenie</Button>
+                        <Button variant="primary" type="submit" onClick={(event) => handleClickSubmit(event)}>Wykup zezwolenie</Button>
                         <Modal show={showCorrect} onHide={handleCloseCorrect}>
                             <Modal.Header closeButton>
                                 <Modal.Title>{reservation.name} {reservation.surname}</Modal.Title>
