@@ -153,10 +153,14 @@ const Reservation = (props) => {
     const [showCorrect, setShowCorrect] = useState(false);
     const [showWrong, setShowWrong] = useState(false);
 
-    const handleCloseCorrect = () => setShowCorrect(false);
+    const handleCloseCorrect = () => {
+        setShowCorrect(false)
+    };
+
     const handleCloseWrong = () => setShowWrong(false);
 
-    const handleClickSubmit = () => {
+    const handleClickSubmit = (event) => {
+        event.preventDefault();
         if (reservation.name !== "" && reservation.surname !== "" && (reservation.email !== "" && reservation.email.includes('@')) && reservation.date !== "" && regulation !== false) {
             fetch(`${process.env.REACT_APP_API_URL}/reservations`, {
                 method: 'POST',
@@ -167,7 +171,8 @@ const Reservation = (props) => {
                 }
             })
                 .then(response => {
-                        if (response.status === 201) {
+                    console.log(response);
+                    if (response.status === 201) {
                             setShowCorrect(true);
                         }
                     }
@@ -192,7 +197,7 @@ const Reservation = (props) => {
             if (popUp.includes("email")) {
                 popUp.indexOf('email') !== -1 && popUp.splice(popUp.indexOf('email'), 1);
             }
-            if (reservation.email === "") {
+            if (!reservation.email.includes('@')) {
                 setPopUp(prevState => [...prevState, "email"])
             }
             if (popUp.includes("datę")) {
@@ -215,7 +220,7 @@ const Reservation = (props) => {
     };
 
     return <>
-        <div className="container content" style={{height: '90vh'}}>
+        <div className="container content" style={{height: '87vh'}}>
             {lake !== null ? <>
                 <h4 style={{marginTop: '40px', marginBottom: '20px'}}>Zezwolenie dla jeziora: {lake.name}</h4>
                 <h5>Opłata wejściowa na jezioro: {lake.price} PLN</h5>
@@ -316,7 +321,7 @@ const Reservation = (props) => {
                                                                   marginLeft: '20px'
                                                               }}>{sum} PLN</Badge></span><br/>
                         <br/>
-                        <Button variant="primary" type="submit" onClick={handleClickSubmit}>Wykup zezwolenie</Button>
+                        <Button variant="primary" type="submit" onClick={(event) => handleClickSubmit(event)}>Wykup zezwolenie</Button>
                         <Modal show={showCorrect} onHide={handleCloseCorrect}>
                             <Modal.Header closeButton>
                                 <Modal.Title>{reservation.name} {reservation.surname}</Modal.Title>
