@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import './LakeDetails.css';
 import Badge from "react-bootstrap/Badge";
+
 const imgPath = process.env.PUBLIC_URL + '/assets/';
 
 const LakeDetails = (props) => {
@@ -15,37 +16,82 @@ const LakeDetails = (props) => {
             })
     }, []);
 
+    const [activeReservations, setActiveReservations] = useState(null);
+
+    useEffect(() => {
+        fetch(`${process.env.REACT_APP_API_URL}/reservations`, {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => {
+                setActiveReservations(data);
+            })
+    }, []);
+
+    let currentReservations;
+
+    const createCurrentReservations = () => {
+        if (activeReservations !== null) {
+            currentReservations = activeReservations.filter((lake) => {
+                    return lake.lakeId === props.match.params.id
+                }
+            );
+        }
+    };
+
+    createCurrentReservations();
+
+
     if (lake === null) {
         return null
     } else {
         return <>
             <div className="container content">
-
                 <div className="row">
                     <div className="col-lg-12">
                         <h1 className="my-4">Jezioro {lake.name}</h1>
                         <div className="card mt-4">
                             <img className="card-img-top img-fluid" src={`${imgPath}${lake.img}`} alt=""/>
                             <div className="card-body">
-                                <span style={{fontSize: '25px', fontWeight: '700'}} className="card-title">Opłata wejściowa na jezioro:<Badge variant="success" style={{fontSize: '25px', marginLeft: '10px'}}>{lake.price} PLN</Badge></span>
-                                <p className="card-text" style={{marginTop: '15px'}}>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                <span style={{fontSize: '25px', fontWeight: '700'}} className="card-title">Opłata wejściowa na jezioro:<Badge
+                                    variant="success"
+                                    style={{fontSize: '25px', marginLeft: '10px'}}>{lake.price} PLN</Badge></span>
+                                <p className="card-text" style={{marginTop: '15px'}}>Lorem ipsum dolor sit amet,
+                                    consectetur adipisicing elit.
                                     Sapiente dicta fugit fugiat hic aliquam itaque facere, soluta. Totam id dolores,
                                     sint aperiam sequi pariatur praesentium animi perspiciatis molestias iure,
                                     ducimus!</p>
-                                <span style={{marginRight: '10px'}}>Ocena użytkowników: </span><span className="text-warning" style={{marginRight: '10px'}}>&#9733; &#9733; &#9733; &#9733; &#9734;</span> 4.0 gwiazdki
+                                <span style={{marginRight: '10px'}}>Ocena użytkowników: </span><span
+                                className="text-warning"
+                                style={{marginRight: '10px'}}>&#9733; &#9733; &#9733; &#9733; &#9734;</span> 4.0
+                                gwiazdki
                             </div>
                         </div>
-
+                        {activeReservations !== null && activeReservations.length > 0 ?
+                            <div className="card my-4">
+                                <div className="card-header"><Badge variant="success"
+                                                                    style={{fontSize: '25px'}}><span>Aktywne rezerwacje</span></Badge>
+                                </div>
+                                <div className="card-body">{currentReservations.map(el => <div key={el.id}>Imię: <span style={{fontWeight: '700'}}>{el.name}</span>, Data rezerwacji: <span style={{fontWeight: '700'}}>{el.date}</span>, Email: <span style={{fontWeight: '700'}}>{el.email}</span></div>)}</div>
+                            </div> : <div className="card my-4">
+                                <div className="card-header"><Badge variant="success"
+                                                                    style={{fontSize: '25px'}}><span>Aktywne rezerwacje</span></Badge>
+                                </div>
+                                <div className="card-body">Brak aktywnych rezerwacji</div>
+                            </div>
+                        }
                         <div className="card card-outline-secondary my-4">
                             <div className="card-header">Opinie użytkowników</div>
                             <div className="card-body">
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam
-                                    inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam
+                                    inventore, similique necessitatibus neque non! Doloribus, modi sapiente
+                                    laboriosam
                                     aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
                                 <small className="text-muted">Dodane przez user10 dnia 13/01/2020 r.</small>
                                 <hr/>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis et enim aperiam
-                                    inventore, similique necessitatibus neque non! Doloribus, modi sapiente laboriosam
+                                    inventore, similique necessitatibus neque non! Doloribus, modi sapiente
+                                    laboriosam
                                     aperiam fugiat laborum. Sequi mollitia, necessitatibus quae sint natus.</p>
                                 <small className="text-muted">Dodane przez user10 dnia 13/01/2020 r.</small>
                                 <hr/>
