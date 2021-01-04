@@ -32,8 +32,8 @@ const LakeDetails = (props) => {
 
     const createCurrentReservations = () => {
         if (activeReservations !== null) {
-            currentReservations = activeReservations.filter((lake) => {
-                    return lake.lakeId === props.match.params.id
+            currentReservations = activeReservations.filter((reservation) => {
+                    return reservation.lakeId === props.match.params.id
                 }
             );
         }
@@ -72,7 +72,7 @@ const LakeDetails = (props) => {
                                 <div className="card-header"><Badge variant="success"
                                                                     style={{fontSize: '25px'}}><span>Aktywne rezerwacje</span></Badge>
                                 </div>
-                                <div className="card-body">{currentReservations.map(el => <div key={el.id}>Imię: <span style={{fontWeight: '700'}}>{el.name}</span>, Data rezerwacji: <span style={{fontWeight: '700'}}>{el.date}</span>, Email: <span style={{fontWeight: '700'}}>{el.email}</span></div>)}</div>
+                                <div className="card-body">{currentReservations.map(res => <div key={res.id}>Imię: <span style={{fontWeight: '700'}}>{res.name}</span>, Data rezerwacji: <span style={{fontWeight: '700'}}>{res.date}</span>, Email: <span style={{fontWeight: '700'}}>{res.email}</span></div>)}</div>
                             </div> : <div className="card my-4">
                                 <div className="card-header"><Badge variant="success"
                                                                     style={{fontSize: '25px'}}><span>Aktywne rezerwacje</span></Badge>
