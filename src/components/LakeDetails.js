@@ -67,16 +67,13 @@ const LakeDetails = (props) => {
                                 gwiazdki
                             </div>
                         </div>
-                        {activeReservations !== null && activeReservations.length > 0 ?
+                        {currentReservations !== undefined && currentReservations.length > 0 ?
                             <div className="card my-4">
-                                <div className="card-header"><Badge variant="success"
-                                                                    style={{fontSize: '25px'}}><span>Aktywne rezerwacje</span></Badge>
-                                </div>
+                                <div className="card-header"><Badge variant="success" style={{fontSize: '25px'}}><span>Aktywne rezerwacje</span></Badge></div>
                                 <div className="card-body">{currentReservations.map(res => <div key={res.id}>Imię: <span style={{fontWeight: '700'}}>{res.name}</span>, Data rezerwacji: <span style={{fontWeight: '700'}}>{res.date}</span>, Email: <span style={{fontWeight: '700'}}>{res.email}</span></div>)}</div>
-                            </div> : <div className="card my-4">
-                                <div className="card-header"><Badge variant="success"
-                                                                    style={{fontSize: '25px'}}><span>Aktywne rezerwacje</span></Badge>
-                                </div>
+                            </div> :
+                            <div className="card my-4">
+                                <div className="card-header"><Badge variant="success" style={{fontSize: '25px'}}><span>Aktywne rezerwacje</span></Badge></div>
                                 <div className="card-body">Brak aktywnych rezerwacji</div>
                             </div>
                         }
