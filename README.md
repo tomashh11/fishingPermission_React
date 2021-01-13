@@ -12,7 +12,7 @@ Teraz możesz sprawdzić swoją rezerwację w szczegółowych informacjach nt. �
 
 ## EN
 ### Application created for 1440x788 resolution.
-**Application "Fishing Permissions"**.  
+**Application "Fishing permissions"**.  
 Firstly choose lake, then click "**Informacje nt. łowiska**" button to see lake details.  
 You can check active reservations (in lake you choose before) in "**Aktywne rezerwacje**" card, if there is no active reservations you will see "**brak aktywnych rezerwacji**".  
 Click "**Wykup zezwolenie**" button to open reservation form, complete form and click "**Wykup zezwolenie**" button to buy your reservation.  
