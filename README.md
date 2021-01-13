@@ -3,6 +3,10 @@
 ## PL
 ### Aplikacja stworzona dla rozdzielczości 1440x788.
 **Aplikacja "Zezwolenia wędkarskie"**.    
+Najpierw wybierz interesujące Cię jezioro, kliknij przycisk "**Informacje nt. łowiska**", żeby przejść do szczegółowych informacji nt. jeziora.  
+Możesz sprawdzić aktywne rezerwacje w karcie "**Aktywne rezerwacje**", jeśli takich obecnie nie ma to wyświetlona zostanie infoamacja "**brak aktywnych rezerwacji**".  
+Kliknij przycisk "**Wykup zezwolenie**", żeby otworzyć formularz do wykupu rezerwacji. Po wypełnieniu formularza ponownie kliknij przycisk "**Wykup zezwolenie**", żeby zatwierdzić i wykupić zezwolenie.  
+Teraz możesz sprawdzić swoją rezerwację w szczegółowych informacjach nt. łowiska w karcie "**Aktywne rezerwacje**".  
   
 
 
